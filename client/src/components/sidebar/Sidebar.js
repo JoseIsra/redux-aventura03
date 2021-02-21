@@ -4,7 +4,6 @@ import { process } from '../../httprequests/httprequest';
 import { Channel } from '../../components';
 
 export const Sidebar = () => {
-
     const [input, setInput] = useState({
         name:''
     });
@@ -18,6 +17,7 @@ export const Sidebar = () => {
 
     useEffect(()=> {
         fetchChannels();
+
     },[])
 
 

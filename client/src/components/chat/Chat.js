@@ -1,11 +1,38 @@
-import React from 'react';
+import React ,{useState, useEffect} from 'react';
 import { useSelector } from 'react-redux';
+import  { process } from '../../httprequests/httprequest';
 import { selectChannel } from '../../features/channelSlice';
+import { Message } from '../../components';
 import './Chat.css';
 export const Chat = () => {
     const mychannel = useSelector(selectChannel);
+    const [message, setMessage] = useState('');
+    const [messageList, setMessageList] = useState([]);
 
-    
+
+
+
+    useEffect(() => {
+        process.loadMessages(mychannel?.id)
+        .then(response => {
+            setMessageList(response.data)
+        }).catch(error => console.log(error))
+    }, [mychannel?.name])
+
+
+
+    const sendMessage =(e)=>{
+        e.preventDefault();
+            let messageObject={
+                message:message,
+                canal_id:mychannel.id    
+            }
+        process.submitMessage(messageObject)
+        .then(res=> {
+            
+            setMessage('');
+        }).catch(error => console.log(error));
+    }
     return (
         <div className="chat">
             <div className="chat__header">
@@ -13,16 +40,18 @@ export const Chat = () => {
             </div>
 
             <div className="chat__messages">
-            <p>MENSAJE UNO </p>
-            <p>MENSAJE UNO </p>
-            <p>MENSAJE UNO </p>
-            <p>MENSAJE UNO </p>
+                {messageList.map(message => (
+                    <Message  key={message._id} {...message}  />
+                ))}
             </div>
 
             <div className="chat__messageInput">
-                <form>
-                    <input type="text" placeholder="nuevo mensaje..." />
-                    <button>asdadasd</button>
+                <form onSubmit={sendMessage}>
+                    <input type="text" 
+                    value={message}
+                    onChange={(e)=> setMessage(e.target.value)}
+                    placeholder="nuevo mensaje..." />
+                    <button type="submit">asdadasd</button>
                 </form>
                 <div className="emoticons">
                 <select>
