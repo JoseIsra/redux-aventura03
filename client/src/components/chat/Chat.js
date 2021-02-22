@@ -10,14 +10,15 @@ export const Chat = () => {
     const [messageList, setMessageList] = useState([]);
 
 
-
-
     useEffect(() => {
         process.loadMessages(mychannel?.id)
         .then(response => {
+            console.log(response?.data);
             setMessageList(response.data)
         }).catch(error => console.log(error))
-    }, [mychannel?.name])
+        
+        
+    }, [mychannel?.id])
 
 
 
@@ -46,12 +47,13 @@ export const Chat = () => {
             </div>
 
             <div className="chat__messageInput">
-                <form onSubmit={sendMessage}>
+                <form >
                     <input type="text" 
                     value={message}
                     onChange={(e)=> setMessage(e.target.value)}
                     placeholder="nuevo mensaje..." />
-                    <button type="submit">asdadasd</button>
+                    <button onClick={sendMessage}
+                    type="submit">asdadasd</button>
                 </form>
                 <div className="emoticons">
                 <select>

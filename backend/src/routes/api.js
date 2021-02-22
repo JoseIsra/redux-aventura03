@@ -16,8 +16,8 @@ router.get('/channels', async (req, res)=> {
 
 router.post('/channel', async (req, res)=> {
 try {
-    await Channel.create(req.body);
-    res.send('doc recibido');res.end();
+    const dat= await Channel.create(req.body);
+    res.json(dat);res.end();
     console.log("DOCUMENTO AGREGADO EXITOSAMENTE! :) ")
     
 } catch (error) {
@@ -25,25 +25,24 @@ try {
 }
 })
 
-router.post('/message', async (req, res)=> {
-    // const {message, id_channel} = req.body;
-   // const newId = mongoose.Types.ObjectId(id_channel);
-    try {   
-        await Message.create(req.body);
-        res.send("mensaje enviado");res.end();
-        console.log("mensaje agregado al canal");
-    } catch (error) {
-        console.log(error);
-    }
-        
+router.post('/message',  (req, res)=> {
+    Message.create(req.body)
+    .then(message => {
+        return Channel.findById(req.body.canal_id).then(channel => {
+            channel.messageslist.push(message._id);
+            return channel.save();
+        })
+    }).then(response => res.json(response))
+    .catch(error => console.log(error));
+
 })
 
 router.get('/messages/:id', async (req, res) => {
     try {
         
-        const response = await Message.find({canal_id:req.params.id});
-        const messageJson = JSON.stringify(response);
-        res.send(messageJson);
+        const response = await Channel.findById(req.params.id).populate('messageslist');
+        //const messageJson = JSON.stringify(response);
+            res.json(response.messageslist);
     } catch (error) {
         console.log(error);
     }
