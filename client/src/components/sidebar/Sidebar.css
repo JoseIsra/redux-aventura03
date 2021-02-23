@@ -1,7 +1,4 @@
 
-*{
-    border:1px solid black;
-}
 
 .sidebar
 {
@@ -9,12 +6,20 @@
     display: flex;
     flex-direction: column;
     height: 75vh;
+    border:1px solid gray;
 }
 
 .sidebar__header
 {
     padding:10px;
 }
+.sidebar__header > h3
+{
+    color:lightgrey;
+    font-weight: 900;
+}
+
+
 
 .sidebar__form
 {
@@ -32,21 +37,50 @@
 .sidebar__form > form > input
 {
     padding:5px;
+    border:1px solid gray;
+    border-radius:12px;
+    background-color:transparent;
+    font-size:0.99rem;
+    color:white;
     outline:none;
 }
+.sidebar__form > form > input:focus
+{
+    box-shadow:0 0 5px lightgrey,
+    0 0 8px lightgrey;
+    
+}
+
+
+.sidebar__form > form > button
+{
+    display:none;
+}
+
 
 .sidebar__channels
 {
     padding:10px;
     flex:1;
+    border:1px solid white;
+    border-radius:10px;
+    overflow: auto;
 }
+
+.sidebar__channels::-webkit-scrollbar
+{
+    display:none;
+}
+
 .gif_image 
 {
-    width:140px;
-    height: 140px;
+    position:relative;
+    margin:10px;
+    left:25%;
+    
 }
 
 .gif_image > img{
-    width:100%;
+    width:120px;
     object-fit: contain;
 }

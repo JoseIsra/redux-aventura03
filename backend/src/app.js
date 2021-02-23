@@ -2,6 +2,8 @@
 const express = require('express');
 const cors = require('cors');
 const app = express();
+
+require('dotenv').config();
 require('./dbconfig');
 
 app.use(express.json());
@@ -11,7 +13,6 @@ app.use(cors({
 }));
 
 app.use('/api',require('./routes/api'));
-
-app.listen(8080, ()=> {
+app.listen(process.env.PORT ||8081 , ()=> {
     console.log('server en linea....');
 })
